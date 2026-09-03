@@ -523,7 +523,7 @@
               <select id="adminGenderFilter" class="select" aria-label="Filtrar por palpite">
                 <option value="all">Menino e Menina</option>
                 <option value="boy">Menino 💙</option>
-                <option value="girl">Menina <span style="color:#ef4f91">&hearts;</span></option>
+                <option value="girl">Menina ♥</option>
               </select>
             </div>
           </div>
@@ -924,7 +924,7 @@
       const selected = [...state.selected[state.gender]].sort();
       const total = selected.length * CONFIG.pricePerNumber;
 
-      els.summaryGender.textContent = state.gender === 'boy' ? 'Menino 💙' : 'Menina <span style="color:#ef4f91">&hearts;</span>';
+      els.summaryGender.textContent = state.gender === 'boy' ? 'Menino 💙' : 'Menina ♥';
       els.unitPrice.textContent = money.format(CONFIG.pricePerNumber);
       els.totalPrice.textContent = money.format(total);
       els.generatePix.disabled = selected.length === 0;
