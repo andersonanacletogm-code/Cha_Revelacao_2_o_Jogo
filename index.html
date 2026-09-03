@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Chá Rifa Revelação — escolha Menino ou Menina, selecione seus números e pague via PIX." />
+  <meta name="theme-color" content="#6db8ff" />
+  <title>Chá Rifa Revelação — O Bebê Agora é Outro!</title>
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --blue: #2385e6;
+      --blue-2: #80c8ff;
+      --blue-soft: #eef8ff;
+      --pink: #ef4f91;
+      --pink-2: #ff9cc5;
+      --pink-soft: #fff0f7;
+      --ink: #17304f;
+      --muted: #67768c;
+      --card: rgba(255,255,255,.90);
+      --line: rgba(23,48,79,.10);
+      --success: #1d9b65;
+      --warning: #d8931b;
+      --shadow: 0 18px 50px rgba(36, 78, 119, .14);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, ui-rounded, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(75,176,255,.22), transparent 28%),
+        radial-gradient(circle at 90% 12%, rgba(255,102,164,.22), transparent 30%),
+        linear-gradient(135deg, #f6fbff 0%, #fff8fb 50%, #fff0f7 100%);
+      min-height: 100vh;
+    }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .shell { width: min(1180px, calc(100% - 28px)); margin: 0 auto; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background: rgba(255,255,255,.82);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar-inner {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; }
+    .brand-bubbles { display: flex; gap: 4px; }
+    .bubble { width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 -3px 6px rgba(0,0,0,.12); }
+    .bubble.blue { background: var(--blue); }
+    .bubble.pink { background: var(--pink); }
+    .topbar a {
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 999px;
+    }
+    .topbar a:hover { background: #f4f7fb; }
+
+    .hero { padding: 42px 0 22px; }
+    .hero-card {
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      background: linear-gradient(110deg, rgba(41,150,244,.96) 0%, rgba(125,195,255,.96) 50%, rgba(255,145,191,.96) 50%, rgba(235,64,137,.96) 100%);
+      color: #fff;
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      min-height: 410px;
+      position: relative;
+      isolation: isolate;
+    }
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(6,31,67,.16), transparent 55%);
+      z-index: -1;
+    }
+    .hero-copy { padding: 46px; align-self: center; }
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.30);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: .83rem;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    h1 { margin: 16px 0 14px; font-size: clamp(2.2rem, 6vw, 4.7rem); line-height: .92; letter-spacing: -.045em; }
+    .hero-copy p { margin: 0; max-width: 620px; font-size: 1.08rem; line-height: 1.6; color: rgba(255,255,255,.94); }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+    .btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 18px;
+      font-weight: 850;
+      transition: .2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { color: #184270; background: #fff; box-shadow: 0 8px 20px rgba(20,54,91,.16); }
+    .btn-ghost { color: #fff; border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.10); }
+    .hero-art { min-height: 410px; }
+    .hero-art img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; padding: 24px 0 54px; align-items: start; }
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.72);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius-xl);
+      padding: 26px;
+    }
+    .card + .card { margin-top: 20px; }
+    .section-title { margin: 0 0 8px; font-size: 1.55rem; letter-spacing: -.025em; }
+    .section-subtitle { margin: 0 0 22px; color: var(--muted); line-height: 1.55; }
+
+    .gender-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 7px;
+      border-radius: 18px;
+      background: #f3f7fb;
+      margin-bottom: 18px;
+    }
+    .gender-btn {
+      border: 0;
+      min-height: 54px;
+      border-radius: 13px;
+      font-weight: 900;
+      color: var(--muted);
+      background: transparent;
+      transition: .2s ease;
+    }
+    .gender-btn[aria-pressed="true"].boy { color: #0f67bd; background: #e4f3ff; box-shadow: inset 0 0 0 2px rgba(35,133,230,.18); }
+    .gender-btn[aria-pressed="true"].girl { color: #c32c70; background: #ffe4f0; box-shadow: inset 0 0 0 2px rgba(239,79,145,.18); }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: .86rem; color: var(--muted); margin-bottom: 14px; }
+    .legend span { display: inline-flex; gap: 7px; align-items: center; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: #fff; border: 1px solid #b8c7d7; }
+    .dot.selected { background: var(--blue); border-color: var(--blue); }
+    .dot.unavailable { background: #d6dee8; border-color: #d6dee8; }
+
+    .number-grid { display: grid; grid-template-columns: repeat(10, minmax(44px, 1fr)); gap: 8px; }
+    .number {
+      aspect-ratio: 1.12;
+      border: 1px solid #cbd9e8;
+      border-radius: 12px;
+      background: rgba(255,255,255,.90);
+      color: #35536f;
+      font-weight: 900;
+      transition: .16s ease;
+      min-width: 0;
+    }
+    .number:hover:not(:disabled) { transform: translateY(-2px); border-color: #8fb8dc; box-shadow: 0 8px 14px rgba(46,105,160,.10); }
+    .number.selected.boy { color: #fff; background: linear-gradient(180deg, #49a7ff, #1f7fda); border-color: #1f7fda; box-shadow: 0 8px 18px rgba(35,133,230,.27); }
+    .number.selected.girl { color: #fff; background: linear-gradient(180deg, #ff7cb2, #e74388); border-color: #e74388; box-shadow: 0 8px 18px rgba(239,79,145,.25); }
+    .number:disabled { color: #9aa8b8; background: #eef2f6; border-color: #e1e7ee; cursor: not-allowed; text-decoration: line-through; }
+
+    .sticky { position: sticky; top: 92px; }
+    .summary-card { overflow: hidden; padding: 0; }
+    .summary-head { padding: 22px 22px 18px; background: linear-gradient(135deg, #f7fbff, #fff6fa); border-bottom: 1px solid var(--line); }
+    .summary-body { padding: 22px; }
+    .summary-row { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; color: var(--muted); }
+    .summary-row strong { color: var(--ink); text-align: right; }
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; min-height: 32px; }
+    .chip { background: #f0f5fa; border: 1px solid #dce7f1; border-radius: 999px; padding: 6px 9px; font-size: .82rem; font-weight: 800; }
+    .total { margin: 14px 0 18px; padding: 16px; border-radius: 16px; background: #f7f9fc; display: flex; justify-content: space-between; align-items: baseline; }
+    .total span { color: var(--muted); font-weight: 700; }
+    .total strong { font-size: 1.75rem; }
+    .btn-pay { width: 100%; color: #fff; background: linear-gradient(135deg, #1b8e67, #18ad79); box-shadow: 0 12px 24px rgba(27,142,103,.22); }
+    .btn-pay:disabled { opacity: .45; box-shadow: none; cursor: not-allowed; transform: none; }
+
+    .notice { margin-top: 14px; padding: 12px 13px; border-radius: 13px; background: #fff8e7; color: #8b6416; font-size: .84rem; line-height: 1.45; border: 1px solid #f5dfaa; }
+
+    .pix-box { display: none; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .pix-box.show { display: block; }
+    #qrcode { display: grid; place-items: center; min-height: 220px; padding: 12px; background: #fff; border: 1px solid #e5ebf2; border-radius: 18px; }
+    #qrcode img, #qrcode canvas { max-width: 100%; height: auto !important; }
+    .pix-label { margin: 14px 0 6px; font-size: .82rem; color: var(--muted); font-weight: 800; }
+    .pix-code {
+      width: 100%;
+      min-height: 80px;
+      resize: vertical;
+      border: 1px solid #d8e3ee;
+      border-radius: 12px;
+      padding: 10px;
+      color: #39516a;
+      background: #f9fbfd;
+      font-size: .77rem;
+      line-height: 1.35;
+    }
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    .btn-small { border: 1px solid #dce5ee; background: #fff; color: var(--ink); padding: 10px 12px; border-radius: 12px; font-weight: 800; }
+
+    .rules-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .rule { border: 1px solid var(--line); border-radius: 18px; padding: 18px; background: rgba(255,255,255,.68); }
+    .rule .icon { font-size: 1.6rem; }
+    .rule h3 { margin: 10px 0 8px; }
+    .rule p { margin: 0; color: var(--muted); line-height: 1.55; font-size: .94rem; }
+
+    .status-bar { display: none; margin-top: 14px; padding: 12px 14px; border-radius: 12px; font-weight: 750; font-size: .9rem; }
+    .status-bar.show { display: block; }
+    .status-bar.success { background: #eaf8f2; color: #14724e; border: 1px solid #bfe9d8; }
+    .status-bar.error { background: #fff0f2; color: #a83443; border: 1px solid #f3c6cd; }
+
+    footer { padding: 0 0 38px; text-align: center; color: var(--muted); font-size: .9rem; }
+
+    @media (max-width: 960px) {
+      .hero-card { grid-template-columns: 1fr; }
+      .hero-art { min-height: 300px; }
+      .layout { grid-template-columns: 1fr; }
+      .sticky { position: static; }
+    }
+    @media (max-width: 720px) {
+      .topbar nav { display: none; }
+      .hero { padding-top: 20px; }
+      .hero-copy { padding: 30px 24px; }
+      .hero-art { min-height: 240px; }
+      .card { padding: 20px 14px; border-radius: 22px; }
+      .number-grid { grid-template-columns: repeat(5, 1fr); gap: 8px; }
+      .number { aspect-ratio: 1.35; }
+      .rules-grid { grid-template-columns: 1fr; }
+    }
+
+
+    /* ===================== ANIMAÇÕES INFANTIS ===================== */
+    body { overflow-x: hidden; }
+    .ambient .heart:first-child { font-size: 0; }
+    .ambient .heart:first-child::after { content: "\\1FA77"; font-size: 30px; }
+    .ambient { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .topbar, main, footer { position: relative; z-index: 1; }
+    .floaty { position: absolute; bottom: -80px; opacity: .72; animation: floatUp linear infinite; filter: drop-shadow(0 5px 8px rgba(30,70,110,.10)); }
+    .floaty.heart { font-size: 30px; }
+    .floaty.star { font-size: 22px; }
+    .floaty.balloon { font-size: 34px; }
+    @keyframes floatUp { from { transform: translate3d(0,0,0) rotate(0deg); } to { transform: translate3d(var(--drift), -115vh, 0) rotate(360deg); } }
+
+    .hero-card { animation: cardIn .8s cubic-bezier(.2,.8,.2,1) both; }
+    .hero-copy > * { animation: softIn .7s ease both; }
+    .hero-copy > *:nth-child(1) { animation-delay: .08s; }
+    .hero-copy > *:nth-child(2) { animation-delay: .16s; }
+    .hero-copy > *:nth-child(3) { animation-delay: .24s; }
+    .hero-copy > *:nth-child(4) { animation-delay: .32s; }
+    @keyframes cardIn { from { opacity:0; transform: translateY(20px) scale(.985); } to { opacity:1; transform:none; } }
+    @keyframes softIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+
+    .number { position: relative; overflow: hidden; }
+    .number::after { content:""; position:absolute; width: 14px; height: 70px; background:rgba(255,255,255,.52); transform:rotate(28deg) translateX(-80px); transition:transform .45s ease; top:-20px; left:0; }
+    .number:hover::after { transform:rotate(28deg) translateX(95px); }
+    .number.pop { animation: numberPop .34s cubic-bezier(.2,1.5,.4,1) both; }
+    @keyframes numberPop { 0%{transform:scale(.75) rotate(-5deg)} 60%{transform:scale(1.13) rotate(3deg)} 100%{transform:scale(1) rotate(0)} }
+    .gender-btn.active-bounce { animation: bounce .38s ease; }
+    @keyframes bounce { 0%,100%{transform:scale(1)} 45%{transform:scale(1.05)} 70%{transform:scale(.98)} }
+
+    .summary-card { transition: transform .25s ease, box-shadow .25s ease; }
+    .summary-card.pulse { animation: summaryPulse .5s ease; }
+    @keyframes summaryPulse { 0%,100%{transform:none} 45%{transform:translateY(-3px) scale(1.008); box-shadow:0 24px 60px rgba(36,78,119,.20)} }
+    .chip { animation: chipIn .25s ease both; }
+    @keyframes chipIn { from{opacity:0; transform:scale(.7) translateY(4px)} to{opacity:1; transform:none} }
+
+    .pix-box.show { animation: pixReveal .55s cubic-bezier(.2,.9,.2,1) both; }
+    @keyframes pixReveal { from{opacity:0; transform:translateY(18px); max-height:0} to{opacity:1; transform:none; max-height:800px} }
+    .btn-pay:not(:disabled) { animation: payGlow 2.4s ease-in-out infinite; }
+    @keyframes payGlow { 0%,100%{box-shadow:0 12px 24px rgba(27,142,103,.22)} 50%{box-shadow:0 12px 30px rgba(27,142,103,.42)} }
+
+    .sound-toggle { border:1px solid var(--line); background:rgba(255,255,255,.9); color:var(--ink); border-radius:999px; padding:9px 12px; font-weight:850; box-shadow:0 8px 20px rgba(36,78,119,.08); }
+    .sound-toggle[aria-pressed="true"] { background:#edf9f4; color:#14724e; border-color:#bfe9d8; }
+    .topbar-actions { display:flex; align-items:center; gap:6px; }
+
+    .confetti-piece { position:fixed; top:-20px; z-index:100; width:9px; height:14px; pointer-events:none; border-radius:3px; animation: confettiFall var(--duration) cubic-bezier(.15,.65,.25,1) forwards; }
+    @keyframes confettiFall { to { transform:translate3d(var(--x),110vh,0) rotate(var(--rot)); opacity:0; } }
+    .reveal-badge { display:inline-flex; align-items:center; gap:7px; margin-top:12px; padding:7px 11px; border-radius:999px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.3); font-size:.84rem; font-weight:800; }
+
+
+
+    /* ===================== ÁREA DOS PAIS / GESTÃO ===================== */
+    .nav-btn { border:0; background:transparent; color:var(--ink); font-weight:800; padding:10px 14px; border-radius:999px; }
+    .nav-btn:hover { background:#f4f7fb; }
+    .view { display:block; }
+    .view[hidden] { display:none !important; }
+    .admin-wrap { padding:34px 0 54px; }
+    .admin-hero { display:flex; justify-content:space-between; gap:18px; align-items:flex-end; margin-bottom:22px; }
+    .admin-hero p { margin:6px 0 0; color:var(--muted); }
+    .admin-actions { display:flex; flex-wrap:wrap; gap:8px; }
+    .btn-admin { border:1px solid #dce5ee; background:#fff; color:var(--ink); padding:10px 14px; border-radius:12px; font-weight:800; }
+    .btn-admin.primary { color:#fff; background:linear-gradient(135deg,#2385e6,#5aaaf3); border-color:transparent; }
+    .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px; }
+    .metric { background:var(--card); border:1px solid rgba(255,255,255,.75); box-shadow:var(--shadow); border-radius:20px; padding:20px; }
+    .metric .kicker { color:var(--muted); font-size:.82rem; font-weight:850; text-transform:uppercase; letter-spacing:.04em; }
+    .metric strong { display:block; margin-top:6px; font-size:1.8rem; letter-spacing:-.03em; }
+    .metric small { color:var(--muted); }
+    .admin-card { background:var(--card); border:1px solid rgba(255,255,255,.75); box-shadow:var(--shadow); border-radius:24px; padding:20px; }
+    .toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; margin-bottom:14px; }
+    .toolbar-left { display:flex; flex-wrap:wrap; gap:8px; flex:1; }
+    .field, .select { width:100%; border:1px solid #d8e3ee; background:#fff; color:var(--ink); border-radius:12px; padding:11px 12px; outline:none; }
+    .field:focus, .select:focus { border-color:#7fb6e6; box-shadow:0 0 0 3px rgba(35,133,230,.10); }
+    .toolbar .field { max-width:320px; }
+    .toolbar .select { width:auto; min-width:160px; }
+    .table-wrap { overflow:auto; border:1px solid var(--line); border-radius:16px; }
+    .orders-table { width:100%; border-collapse:collapse; min-width:900px; background:#fff; }
+    .orders-table th, .orders-table td { padding:12px 13px; border-bottom:1px solid #edf1f5; text-align:left; vertical-align:middle; }
+    .orders-table th { position:sticky; top:0; background:#f8fbfe; color:#50657a; font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; z-index:1; }
+    .status-pill { display:inline-flex; align-items:center; gap:6px; padding:6px 9px; border-radius:999px; font-size:.78rem; font-weight:850; }
+    .status-pending { background:#fff5dd; color:#9b6b0f; }
+    .status-paid { background:#e9f8f1; color:#14724e; }
+    .status-cancelled { background:#f2f4f7; color:#687486; }
+    .row-actions { display:flex; gap:6px; flex-wrap:wrap; }
+    .row-actions button { border:1px solid #dce5ee; background:#fff; border-radius:9px; padding:7px 9px; font-weight:800; font-size:.78rem; }
+    .empty-state { padding:34px; text-align:center; color:var(--muted); }
+    .admin-login { max-width:470px; margin:52px auto; }
+    .admin-login .card { padding:28px; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 0 14px; }
+    .form-grid label { display:grid; gap:6px; font-size:.83rem; font-weight:800; color:#50657a; }
+    .checkout-fields { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin:14px 0 4px; }
+    .checkout-fields label { display:grid; gap:5px; color:#50657a; font-size:.8rem; font-weight:800; }
+    .microcopy { font-size:.76rem; color:var(--muted); line-height:1.45; margin-top:8px; }
+    .admin-note { margin-top:14px; background:#eef7ff; color:#315f88; border:1px solid #cfe6fb; border-radius:12px; padding:11px 12px; font-size:.82rem; line-height:1.45; }
+    @media (max-width:900px){ .metrics{grid-template-columns:1fr 1fr}.admin-hero{align-items:flex-start;flex-direction:column}.checkout-fields{grid-template-columns:1fr} }
+    @media (max-width:560px){ .metrics{grid-template-columns:1fr}.toolbar-left{display:grid;width:100%}.toolbar .field,.toolbar .select{max-width:none;width:100%}.admin-actions{width:100%}.admin-actions button{flex:1} }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.01ms !important; }
+      .ambient { display:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <span class="floaty heart" style="left:7%;--drift:28px;animation-duration:15s;animation-delay:-4s">💙</span>
+    <span class="floaty star" style="left:17%;--drift:-18px;animation-duration:19s;animation-delay:-12s">⭐</span>
+    <span class="floaty balloon" style="left:31%;--drift:35px;animation-duration:22s;animation-delay:-8s">🎈</span>
+    <span class="floaty heart" style="left:48%;--drift:-28px;animation-duration:17s;animation-delay:-10s">🩷</span>
+    <span class="floaty star" style="left:64%;--drift:20px;animation-duration:21s;animation-delay:-15s">✨</span>
+    <span class="floaty balloon" style="left:78%;--drift:-35px;animation-duration:20s;animation-delay:-5s">🎈</span>
+    <span class="floaty heart" style="left:91%;--drift:22px;animation-duration:16s;animation-delay:-11s">💗</span>
+  </div>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <div class="brand" aria-label="Chá Rifa Revelação">
+        <span class="brand-bubbles" aria-hidden="true"><span class="bubble blue"></span><span class="bubble pink"></span></span>
+        Chá Rifa Revelação
+      </div>
+      <div class="topbar-actions">
+        <button id="soundToggle" class="sound-toggle" type="button" aria-pressed="true" title="Ativar ou desativar sons">🔊 Sons</button>
+        <nav aria-label="Navegação principal">
+          <a href="#rifa" data-public-link>Escolher números</a>
+          <a href="#regras" data-public-link>Premiação</a>
+          <button id="openAdmin" class="nav-btn" type="button">👨‍👩‍👧 Área dos pais</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div id="publicView" class="view">
+    <section class="hero">
+      <div class="shell">
+        <div class="hero-card">
+          <div class="hero-copy">
+            <span class="eyebrow">💙 O bebê agora é outro! 🩷</span>
+            <h1>Chá Rifa<br>Revelação</h1>
+            <p>Escolha <strong>Menino</strong> ou <strong>Menina</strong>, selecione seus números da sorte de 00 a 99 e gere seu pagamento via PIX em poucos segundos.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#rifa">🎟️ Escolher números</a>
+              <a class="btn btn-ghost" href="#regras">🎁 Ver premiação</a>
+            </div>
+            <div class="reveal-badge">🎀 Uma brincadeira feita com carinho para a nossa família!</div>
+          </div>
+          <div class="hero-art"><img src="img/rifa_cha.jpeg" alt="Arte do Chá Rifa Revelação com tema azul e rosa" /></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="rifa" class="shell layout">
+      <div>
+        <article class="card">
+          <h2 class="section-title">1. Faça sua aposta</h2>
+          <p class="section-subtitle">Escolha o palpite e depois marque um ou mais números. Cada combinação de palpite + número é uma rifa.</p>
+
+          <div class="gender-switch" role="group" aria-label="Escolha o palpite do bebê">
+            <button type="button" class="gender-btn boy" data-gender="boy" aria-pressed="true">💙 MENINO</button>
+            <button type="button" class="gender-btn girl" data-gender="girl" aria-pressed="false">🩷 MENINA</button>
+          </div>
+
+          <div class="legend" aria-label="Legenda dos números">
+            <span><i class="dot"></i> Disponível</span>
+            <span><i class="dot selected"></i> Selecionado</span>
+            <span><i class="dot unavailable"></i> Indisponível</span>
+          </div>
+
+          <div id="numberGrid" class="number-grid" aria-live="polite"></div>
+          <div id="selectionStatus" class="status-bar" role="status"></div>
+        </article>
+
+        <article id="regras" class="card">
+          <h2 class="section-title">🎁 Como funcionará a premiação?</h2>
+          <p class="section-subtitle">A quantidade de prêmios dependerá da quantidade total de rifas vendidas.</p>
+          <div class="rules-grid">
+            <div class="rule"><div class="icon">🏆</div><h3>Quantidade menor</h3><p>Sorteio do prêmio principal de <strong>R$ 200,00</strong>.</p></div>
+            <div class="rule"><div class="icon">🎁</div><h3>Mais da metade</h3><p>Serão realizados <strong>2 sorteios</strong>, sendo o segundo prêmio um brinde especial.</p></div>
+            <div class="rule"><div class="icon">🎉</div><h3>Rifa completa</h3><p>Teremos <strong>3 sorteios e 3 ganhadores</strong>, com um prêmio diferente para cada pessoa.</p></div>
+          </div>
+        </article>
+      </div>
+
+      <aside class="sticky">
+        <section class="card summary-card" aria-label="Resumo da compra">
+          <div class="summary-head">
+            <h2 class="section-title" style="margin-bottom:4px">Resumo</h2>
+            <div style="color:var(--muted);font-size:.9rem">Confira antes de gerar o PIX</div>
+          </div>
+          <div class="summary-body">
+            <div class="summary-row"><span>Palpite</span><strong id="summaryGender">Menino 💙</strong></div>
+            <div class="summary-row"><span>Valor por número</span><strong id="unitPrice">R$ 20,00</strong></div>
+            <div class="summary-row" style="display:block"><span>Números escolhidos</span><div id="selectedChips" class="chips"><span style="color:var(--muted);font-size:.86rem">Nenhum número selecionado</span></div></div>
+            <div class="total"><span>Total</span><strong id="totalPrice">R$ 0,00</strong></div>
+            <div class="checkout-fields">
+              <label>Seu nome
+                <input id="buyerName" class="field" type="text" maxlength="80" autocomplete="name" placeholder="Ex.: Maria Silva" />
+              </label>
+              <label>WhatsApp
+                <input id="buyerPhone" class="field" type="tel" maxlength="20" autocomplete="tel" placeholder="(81) 99999-9999" />
+              </label>
+            </div>
+            <div class="microcopy">Os dados são usados para identificar sua reserva e permitir a confirmação do pagamento.</div>
+
+            <button id="generatePix" class="btn btn-pay" type="button" disabled>💳 Gerar PIX / QR Code</button>
+            <div class="notice">ℹ️ A reserva é registrada neste navegador como <strong>Pendente</strong>. Para uso público real e simultâneo, publique com backend/banco de dados para garantir bloqueio transacional dos números.</div>
+
+            <div id="pixBox" class="pix-box" aria-live="polite">
+              <div id="qrcode" aria-label="QR Code PIX"></div>
+              <div class="pix-label">PIX Copia e Cola</div>
+              <textarea id="pixCode" class="pix-code" readonly aria-label="Código PIX Copia e Cola"></textarea>
+              <div class="action-grid">
+                <button id="copyPix" class="btn-small" type="button">📋 Copiar PIX</button>
+                <button id="downloadQr" class="btn-small" type="button">⬇️ Salvar QR</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </section>
+    </div>
+
+    <section id="adminView" class="view shell admin-wrap" hidden aria-label="Área de gestão dos pais">
+      <div id="adminLogin" class="admin-login">
+        <div class="card">
+          <span class="eyebrow" style="background:#eef7ff;color:#286da9;border-color:#d2e9fb">🔐 Área reservada</span>
+          <h2 class="section-title" style="margin-top:14px">Gestão do Chá Rifa</h2>
+          <p class="section-subtitle">Digite o PIN administrativo para consultar reservas, pagamentos e total arrecadado.</p>
+          <label style="display:grid;gap:6px;font-weight:800;color:#50657a">PIN de acesso
+            <input id="adminPinInput" class="field" type="password" inputmode="numeric" autocomplete="current-password" placeholder="Digite o PIN" />
+          </label>
+          <button id="adminLoginBtn" class="btn btn-admin primary" type="button" style="width:100%;margin-top:12px">Entrar na gestão</button>
+          <div id="adminLoginStatus" class="status-bar" role="status"></div>
+          <div class="admin-note">🔒 Nesta versão local, o PIN protege apenas a interface. Em produção, autenticação e dados devem ficar no servidor/banco de dados.</div>
+          <button id="backToRaffleFromLogin" class="btn-admin" type="button" style="width:100%;margin-top:10px">← Voltar para a rifa</button>
+        </div>
+      </div>
+
+      <div id="adminDashboard" hidden>
+        <div class="admin-hero">
+          <div>
+            <span class="eyebrow" style="background:#eef7ff;color:#286da9;border-color:#d2e9fb">📊 Painel dos pais</span>
+            <h2 class="section-title" style="margin-top:12px">Gestão de números e arrecadação</h2>
+            <p>Acompanhe reservas pendentes, pagamentos confirmados e disponibilidade dos números.</p>
+          </div>
+          <div class="admin-actions">
+            <button id="exportCsv" class="btn-admin" type="button">⬇️ Exportar CSV</button>
+            <button id="adminLogout" class="btn-admin" type="button">🔒 Sair</button>
+            <button id="backToRaffle" class="btn-admin primary" type="button">🎟️ Voltar para a rifa</button>
+          </div>
+        </div>
+
+        <div class="metrics" aria-label="Indicadores da rifa">
+          <div class="metric"><span class="kicker">Total arrecadado</span><strong id="metricPaid">R$ 0,00</strong><small>Somente pagamentos confirmados</small></div>
+          <div class="metric"><span class="kicker">Valor pendente</span><strong id="metricPending">R$ 0,00</strong><small>Reservas aguardando confirmação</small></div>
+          <div class="metric"><span class="kicker">Números pagos</span><strong id="metricPaidNumbers">0</strong><small>Combinações confirmadas</small></div>
+          <div class="metric"><span class="kicker">Números pendentes</span><strong id="metricPendingNumbers">0</strong><small>Combinações reservadas</small></div>
+        </div>
+
+        <div class="admin-card">
+          <div class="toolbar">
+            <div class="toolbar-left">
+              <input id="adminSearch" class="field" type="search" placeholder="Buscar por nome, WhatsApp ou número..." aria-label="Buscar reservas" />
+              <select id="adminStatusFilter" class="select" aria-label="Filtrar por status">
+                <option value="all">Todos os status</option>
+                <option value="pending">Pendentes</option>
+                <option value="paid">Pagos</option>
+                <option value="cancelled">Cancelados</option>
+              </select>
+              <select id="adminGenderFilter" class="select" aria-label="Filtrar por palpite">
+                <option value="all">Menino e Menina</option>
+                <option value="boy">Menino 💙</option>
+                <option value="girl">Menina 🩷</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="orders-table">
+              <thead><tr><th>Participante</th><th>Palpite</th><th>Números</th><th>Valor</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead>
+              <tbody id="ordersBody"></tbody>
+            </table>
+            <div id="ordersEmpty" class="empty-state" hidden>✨ Nenhum registro encontrado para os filtros selecionados.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell">🍀 Boa sorte a todos! Que venha a grande revelação! 💙🩷</footer>
+
+  <script>
+    'use strict';
+
+    // ===================== CONFIGURAÇÃO =====================
+    // Substitua os dados abaixo antes de publicar o site.
+    const CONFIG = Object.freeze({
+      pricePerNumber: 20.00,
+      pixKey: 'Binariokidteens@gmail.com',
+      merchantName: 'CHA RIFA',     // até 25 caracteres, sem acentos é mais seguro
+      merchantCity: 'RECIFE',       // até 15 caracteres, sem acentos é mais seguro
+      transactionPrefix: 'RIFA',
+      adminPin: '1234', // ALTERE antes de publicar
+      storageKey: 'chaRifaOrdersV1',
+      demoPix: false,
+      // Números indisponíveis podem ser preenchidos pelo backend na versão de produção.
+      unavailable: {
+        boy: [],
+        girl: []
+      }
+    });
+
+    const state = {
+      gender: 'boy',
+      selected: { boy: new Set(), girl: new Set() },
+      currentOrderId: null
+    };
+
+    const els = {
+      grid: document.querySelector('#numberGrid'),
+      genderButtons: [...document.querySelectorAll('.gender-btn')],
+      summaryGender: document.querySelector('#summaryGender'),
+      selectedChips: document.querySelector('#selectedChips'),
+      totalPrice: document.querySelector('#totalPrice'),
+      unitPrice: document.querySelector('#unitPrice'),
+      generatePix: document.querySelector('#generatePix'),
+      pixBox: document.querySelector('#pixBox'),
+      qrcode: document.querySelector('#qrcode'),
+      pixCode: document.querySelector('#pixCode'),
+      copyPix: document.querySelector('#copyPix'),
+      downloadQr: document.querySelector('#downloadQr'),
+      selectionStatus: document.querySelector('#selectionStatus'),
+      soundToggle: document.querySelector('#soundToggle'),
+      summaryCard: document.querySelector('.summary-card'),
+      buyerName: document.querySelector('#buyerName'),
+      buyerPhone: document.querySelector('#buyerPhone'),
+      publicView: document.querySelector('#publicView'),
+      adminView: document.querySelector('#adminView'),
+      openAdmin: document.querySelector('#openAdmin'),
+      adminLogin: document.querySelector('#adminLogin'),
+      adminDashboard: document.querySelector('#adminDashboard'),
+      adminPinInput: document.querySelector('#adminPinInput'),
+      adminLoginBtn: document.querySelector('#adminLoginBtn'),
+      adminLoginStatus: document.querySelector('#adminLoginStatus'),
+      adminLogout: document.querySelector('#adminLogout'),
+      backToRaffle: document.querySelector('#backToRaffle'),
+      backToRaffleFromLogin: document.querySelector('#backToRaffleFromLogin'),
+      metricPaid: document.querySelector('#metricPaid'),
+      metricPending: document.querySelector('#metricPending'),
+      metricPaidNumbers: document.querySelector('#metricPaidNumbers'),
+      metricPendingNumbers: document.querySelector('#metricPendingNumbers'),
+      ordersBody: document.querySelector('#ordersBody'),
+      ordersEmpty: document.querySelector('#ordersEmpty'),
+      adminSearch: document.querySelector('#adminSearch'),
+      adminStatusFilter: document.querySelector('#adminStatusFilter'),
+      adminGenderFilter: document.querySelector('#adminGenderFilter'),
+      exportCsv: document.querySelector('#exportCsv')
+    };
+
+    const money = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+    const twoDigits = n => String(n).padStart(2, '0');
+
+    function showStatus(message, type = 'success') {
+      els.selectionStatus.textContent = message;
+      els.selectionStatus.className = `status-bar show ${type}`;
+      window.clearTimeout(showStatus.timer);
+      showStatus.timer = window.setTimeout(() => { els.selectionStatus.className = 'status-bar'; }, 2800);
+    }
+
+
+    // ---------- Sons compatíveis com Chrome ----------
+    // Os efeitos são arquivos WAV locais. Isso evita depender apenas do Web Audio API.
+    // O Chrome exige uma interação do usuário antes de reproduzir áudio; por isso
+    // os sons são disparados somente em cliques/toques reais.
+    let soundEnabled = true;
+    const audioFiles = {
+      select: new Audio('sounds/select.wav'),
+      boy: new Audio('sounds/boy.wav'),
+      girl: new Audio('sounds/girl.wav'),
+      success: new Audio('sounds/success.wav')
+    };
+
+    Object.values(audioFiles).forEach(audio => {
+      audio.preload = 'auto';
+      audio.volume = 0.65;
+    });
+
+    function playSound(name) {
+      if (!soundEnabled || !audioFiles[name]) return;
+      const audio = audioFiles[name];
+      try {
+        audio.pause();
+        audio.currentTime = 0;
+        const promise = audio.play();
+        if (promise && typeof promise.catch === 'function') {
+          promise.catch(() => {
+            // O Chrome pode bloquear a reprodução caso não haja gesto do usuário.
+          });
+        }
+      } catch (_) {}
+    }
+
+    // Pré-carrega os arquivos após o primeiro gesto do usuário.
+    function unlockSounds() {
+      if (!soundEnabled) return;
+      Object.values(audioFiles).forEach(audio => {
+        try {
+          audio.load();
+        } catch (_) {}
+      });
+      document.removeEventListener('pointerdown', unlockSounds);
+      document.removeEventListener('keydown', unlockSounds);
+    }
+
+    document.addEventListener('pointerdown', unlockSounds, { once: true, passive: true });
+    document.addEventListener('keydown', unlockSounds, { once: true });
+
+    function playSelectSound() { playSound('select'); }
+    function playGenderSound(gender) { playSound(gender === 'boy' ? 'boy' : 'girl'); }
+    function playSuccessSound() { playSound('success'); }
+
+    function setSoundEnabled(enabled) {
+      soundEnabled = enabled;
+      els.soundToggle.setAttribute('aria-pressed', String(enabled));
+      els.soundToggle.textContent = enabled ? '🔊 Sons' : '🔇 Silêncio';
+      if (enabled) {
+        // O próprio clique no botão é um gesto permitido pelo Chrome.
+        playSound('select');
+      }
+    }
+
+    function burstConfetti(count = 70) {
+      const pieces = [];
+      for (let i = 0; i < count; i++) {
+        const piece = document.createElement('span');
+        piece.className = 'confetti-piece';
+        piece.style.left = `${35 + Math.random()*30}%`;
+        piece.style.setProperty('--x', `${(Math.random()-.5)*95}vw`);
+        piece.style.setProperty('--rot', `${(Math.random()-.5)*1000}deg`);
+        piece.style.setProperty('--duration', `${1.5 + Math.random()*1.5}s`);
+        piece.style.background = ['#2385e6','#ef4f91','#ffd34d','#7fd3ff','#ff9cc5','#7ed6a7'][Math.floor(Math.random()*6)];
+        piece.style.animationDelay = `${Math.random()*.15}s`;
+        document.body.appendChild(piece);
+        pieces.push(piece);
+      }
+      window.setTimeout(() => pieces.forEach(p => p.remove()), 3400);
+    }
+
+    function loadOrders() {
+      try { return JSON.parse(localStorage.getItem(CONFIG.storageKey) || '[]'); }
+      catch { return []; }
+    }
+
+    function saveOrders(orders) {
+      localStorage.setItem(CONFIG.storageKey, JSON.stringify(orders));
+      window.dispatchEvent(new CustomEvent('raffle:orders-changed'));
+    }
+
+    function getUnavailableNumbers(gender) {
+      const fromConfig = CONFIG.unavailable[gender] || [];
+      const fromOrders = loadOrders()
+        .filter(order => order.gender === gender && ['pending','paid'].includes(order.status) && order.id !== state.currentOrderId)
+        .flatMap(order => order.numbers || []);
+      return new Set([...fromConfig, ...fromOrders]);
+    }
+
+    function releaseCurrentPendingOrder(reason = 'selection_changed') {
+      if (!state.currentOrderId) return;
+      const orders = loadOrders();
+      const idx = orders.findIndex(o => o.id === state.currentOrderId && o.status === 'pending');
+      if (idx >= 0) {
+        orders[idx] = { ...orders[idx], status: 'cancelled', updatedAt: new Date().toISOString(), cancelReason: reason };
+        saveOrders(orders);
+      }
+      state.currentOrderId = null;
+    }
+
+    function createPendingOrder(selected, amount, txid) {
+      const orders = loadOrders();
+      const blocked = getUnavailableNumbers(state.gender);
+      const collision = selected.find(num => blocked.has(num));
+      if (collision) throw new Error(`O número ${collision} acabou de ficar indisponível. Escolha outro número.`);
+      const order = {
+        id: (crypto.randomUUID ? crypto.randomUUID() : `order-${Date.now()}-${Math.random().toString(36).slice(2)}`),
+        txid,
+        buyerName: els.buyerName.value.trim(),
+        buyerPhone: els.buyerPhone.value.trim(),
+        gender: state.gender,
+        numbers: [...selected],
+        amount,
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      orders.push(order);
+      saveOrders(orders);
+      state.currentOrderId = order.id;
+      return order;
+    }
+
+    function updateOrderStatus(id, status) {
+      const allowed = ['pending','paid','cancelled'];
+      if (!allowed.includes(status)) return;
+      const orders = loadOrders();
+      const idx = orders.findIndex(o => o.id === id);
+      if (idx < 0) return;
+      orders[idx] = { ...orders[idx], status, updatedAt: new Date().toISOString(), paidAt: status === 'paid' ? new Date().toISOString() : orders[idx].paidAt };
+      saveOrders(orders);
+      renderAdmin();
+      renderGrid();
+    }
+
+    function showPublicView() {
+      els.adminView.hidden = true;
+      els.publicView.hidden = false;
+      document.querySelector('footer').hidden = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showAdminView() {
+      els.publicView.hidden = true;
+      els.adminView.hidden = false;
+      document.querySelector('footer').hidden = true;
+      const authenticated = sessionStorage.getItem('chaRifaAdminAuth') === '1';
+      els.adminLogin.hidden = authenticated;
+      els.adminDashboard.hidden = !authenticated;
+      if (authenticated) renderAdmin();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function loginAdmin() {
+      if (els.adminPinInput.value === CONFIG.adminPin) {
+        sessionStorage.setItem('chaRifaAdminAuth', '1');
+        els.adminLoginStatus.className = 'status-bar';
+        els.adminLogin.hidden = true;
+        els.adminDashboard.hidden = false;
+        els.adminPinInput.value = '';
+        renderAdmin();
+      } else {
+        els.adminLoginStatus.textContent = 'PIN incorreto.';
+        els.adminLoginStatus.className = 'status-bar show error';
+      }
+    }
+
+    function logoutAdmin() {
+      sessionStorage.removeItem('chaRifaAdminAuth');
+      els.adminDashboard.hidden = true;
+      els.adminLogin.hidden = false;
+    }
+
+    function statusLabel(status) {
+      return status === 'paid' ? '✅ Pago' : status === 'pending' ? '⏳ Pendente' : '✖ Cancelado';
+    }
+
+    function renderAdmin() {
+      const orders = loadOrders();
+      const activePaid = orders.filter(o => o.status === 'paid');
+      const activePending = orders.filter(o => o.status === 'pending');
+      els.metricPaid.textContent = money.format(activePaid.reduce((sum,o)=>sum+Number(o.amount||0),0));
+      els.metricPending.textContent = money.format(activePending.reduce((sum,o)=>sum+Number(o.amount||0),0));
+      els.metricPaidNumbers.textContent = activePaid.reduce((sum,o)=>sum+(o.numbers?.length||0),0);
+      els.metricPendingNumbers.textContent = activePending.reduce((sum,o)=>sum+(o.numbers?.length||0),0);
+
+      const q = els.adminSearch.value.trim().toLowerCase();
+      const status = els.adminStatusFilter.value;
+      const gender = els.adminGenderFilter.value;
+      const filtered = [...orders].reverse().filter(o => {
+        const haystack = `${o.buyerName} ${o.buyerPhone} ${(o.numbers||[]).join(' ')}`.toLowerCase();
+        return (!q || haystack.includes(q)) && (status === 'all' || o.status === status) && (gender === 'all' || o.gender === gender);
+      });
+
+      els.ordersBody.replaceChildren();
+      els.ordersEmpty.hidden = filtered.length > 0;
+      filtered.forEach(order => {
+        const tr = document.createElement('tr');
+        const created = new Date(order.createdAt).toLocaleString('pt-BR');
+        tr.innerHTML = `
+          <td><strong>${escapeHtml(order.buyerName || 'Sem nome')}</strong><br><small>${escapeHtml(order.buyerPhone || '')}</small></td>
+          <td>${order.gender === 'boy' ? '💙 Menino' : '🩷 Menina'}</td>
+          <td><strong>${(order.numbers||[]).map(escapeHtml).join(', ')}</strong></td>
+          <td>${money.format(Number(order.amount||0))}</td>
+          <td><span class="status-pill status-${order.status}">${statusLabel(order.status)}</span></td>
+          <td>${created}</td>
+          <td><div class="row-actions"></div></td>`;
+        const actions = tr.querySelector('.row-actions');
+        if (order.status !== 'paid') {
+          const paidBtn = document.createElement('button'); paidBtn.textContent='Confirmar pago'; paidBtn.addEventListener('click',()=>updateOrderStatus(order.id,'paid')); actions.appendChild(paidBtn);
+        }
+        if (order.status !== 'pending') {
+          const pendingBtn = document.createElement('button'); pendingBtn.textContent='Marcar pendente'; pendingBtn.addEventListener('click',()=>updateOrderStatus(order.id,'pending')); actions.appendChild(pendingBtn);
+        }
+        if (order.status !== 'cancelled') {
+          const cancelBtn = document.createElement('button'); cancelBtn.textContent='Cancelar'; cancelBtn.addEventListener('click',()=>updateOrderStatus(order.id,'cancelled')); actions.appendChild(cancelBtn);
+        }
+        els.ordersBody.appendChild(tr);
+      });
+    }
+
+    function escapeHtml(value='') {
+      return String(value).replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[ch]));
+    }
+
+    function exportOrdersCsv() {
+      const orders = loadOrders();
+      const rows = [['Nome','WhatsApp','Palpite','Numeros','Valor','Status','Criado em','Atualizado em']];
+      orders.forEach(o => rows.push([o.buyerName,o.buyerPhone,o.gender==='boy'?'Menino':'Menina',(o.numbers||[]).join(' '),Number(o.amount||0).toFixed(2),statusLabel(o.status).replace(/^[^ ]+ /,''),o.createdAt,o.updatedAt]));
+      const csv = '\ufeff' + rows.map(row => row.map(v => `"${String(v??'').replace(/"/g,'""')}"`).join(';')).join('\n');
+      const url = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8;'}));
+      const a = document.createElement('a'); a.href=url; a.download=`cha-rifa-gestao-${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }
+
+    function renderGrid() {
+      els.grid.replaceChildren();
+      const selected = state.selected[state.gender];
+      const blocked = getUnavailableNumbers(state.gender);
+
+      for (let n = 0; n < 100; n++) {
+        const value = twoDigits(n);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `number ${state.gender}`;
+        button.textContent = value;
+        button.dataset.number = value;
+        button.setAttribute('aria-label', `Número ${value}`);
+
+        if (blocked.has(value)) {
+          button.disabled = true;
+          button.title = 'Número indisponível';
+        } else if (selected.has(value)) {
+          button.classList.add('selected');
+          button.setAttribute('aria-pressed', 'true');
+        } else {
+          button.setAttribute('aria-pressed', 'false');
+        }
+
+        button.addEventListener('click', () => toggleNumber(value));
+        els.grid.appendChild(button);
+      }
+    }
+
+    function toggleNumber(value) {
+      releaseCurrentPendingOrder();
+      const selected = state.selected[state.gender];
+      const wasSelected = selected.has(value);
+      if (wasSelected) selected.delete(value); else selected.add(value);
+      renderGrid();
+      const chosenButton = [...els.grid.querySelectorAll('.number')].find(btn => btn.dataset.number === value);
+      if (!wasSelected && chosenButton) chosenButton.classList.add('pop');
+      if (!wasSelected) playSelectSound();
+      renderSummary();
+      hidePix();
+      els.summaryCard.classList.remove('pulse');
+      void els.summaryCard.offsetWidth;
+      els.summaryCard.classList.add('pulse');
+    }
+
+    function setGender(gender) {
+      if (gender === state.gender) return;
+      releaseCurrentPendingOrder();
+      state.gender = gender;
+      els.genderButtons.forEach(btn => {
+        btn.setAttribute('aria-pressed', String(btn.dataset.gender === gender));
+        if (btn.dataset.gender === gender) { btn.classList.remove('active-bounce'); void btn.offsetWidth; btn.classList.add('active-bounce'); }
+      });
+      playGenderSound(gender);
+      renderGrid();
+      renderSummary();
+      hidePix();
+    }
+
+    function renderSummary() {
+      const selected = [...state.selected[state.gender]].sort();
+      const total = selected.length * CONFIG.pricePerNumber;
+
+      els.summaryGender.textContent = state.gender === 'boy' ? 'Menino 💙' : 'Menina 🩷';
+      els.unitPrice.textContent = money.format(CONFIG.pricePerNumber);
+      els.totalPrice.textContent = money.format(total);
+      els.generatePix.disabled = selected.length === 0;
+
+      els.selectedChips.replaceChildren();
+      if (!selected.length) {
+        const empty = document.createElement('span');
+        empty.style.cssText = 'color:var(--muted);font-size:.86rem';
+        empty.textContent = 'Nenhum número selecionado';
+        els.selectedChips.appendChild(empty);
+      } else {
+        selected.forEach(num => {
+          const chip = document.createElement('span');
+          chip.className = 'chip';
+          chip.textContent = num;
+          els.selectedChips.appendChild(chip);
+        });
+      }
+    }
+
+    function hidePix() {
+      els.pixBox.classList.remove('show');
+      els.qrcode.replaceChildren();
+      els.pixCode.value = '';
+    }
+
+    // ---------- PIX BR Code (EMV) ----------
+    function emv(id, value) {
+      const text = String(value);
+      return `${id}${String(text.length).padStart(2, '0')}${text}`;
+    }
+
+    function crc16(payload) {
+      let crc = 0xFFFF;
+      for (let i = 0; i < payload.length; i++) {
+        crc ^= payload.charCodeAt(i) << 8;
+        for (let bit = 0; bit < 8; bit++) {
+          crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) : (crc << 1);
+          crc &= 0xFFFF;
+        }
+      }
+      return crc.toString(16).toUpperCase().padStart(4, '0');
+    }
+
+    function sanitizePixText(value, max) {
+      return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9 .-]/g, '').toUpperCase().slice(0, max);
+    }
+
+    function createPixPayload({ key, name, city, amount, txid, description }) {
+      const gui = emv('00', 'BR.GOV.BCB.PIX');
+      const keyField = emv('01', key.trim());
+      const descField = description ? emv('02', sanitizePixText(description, 60)) : '';
+      const merchantAccount = emv('26', gui + keyField + descField);
+
+      const payload = [
+        emv('00', '01'),
+        merchantAccount,
+        emv('52', '0000'),
+        emv('53', '986'),
+        emv('54', Number(amount).toFixed(2)),
+        emv('58', 'BR'),
+        emv('59', sanitizePixText(name, 25)),
+        emv('60', sanitizePixText(city, 15)),
+        emv('62', emv('05', sanitizePixText(txid || '***', 25))),
+        '6304'
+      ].join('');
+
+      return payload + crc16(payload);
+    }
+
+    function buildTransactionId() {
+      const selected = [...state.selected[state.gender]].sort().join('');
+      const suffix = Math.random().toString(36).slice(2, 7).toUpperCase();
+      return `${CONFIG.transactionPrefix}${state.gender === 'boy' ? 'M' : 'F'}${selected.slice(0, 12)}${suffix}`.slice(0, 25);
+    }
+
+    function generatePayment() {
+      if (!CONFIG.pixKey.trim()) {
+        showStatus('Configure a chave PIX no bloco CONFIG do arquivo antes de gerar pagamentos.', 'error');
+        return;
+      }
+      if (typeof QRCode === 'undefined') {
+        showStatus('Não foi possível carregar o gerador de QR Code. Verifique sua internet.', 'error');
+        return;
+      }
+
+      const selected = [...state.selected[state.gender]].sort();
+      if (!selected.length) return;
+      if (!els.buyerName.value.trim()) { showStatus('Informe seu nome para identificar a reserva.', 'error'); els.buyerName.focus(); return; }
+      if (els.buyerPhone.value.replace(/\D/g,'').length < 10) { showStatus('Informe um WhatsApp válido com DDD.', 'error'); els.buyerPhone.focus(); return; }
+
+      releaseCurrentPendingOrder('regenerated');
+      const amount = selected.length * CONFIG.pricePerNumber;
+      const description = `Cha Rifa ${state.gender === 'boy' ? 'Menino' : 'Menina'} nums ${selected.join('-')}`;
+      const txid = buildTransactionId();
+      try { createPendingOrder(selected, amount, txid); }
+      catch (error) { showStatus(error.message, 'error'); renderGrid(); return; }
+      const payload = createPixPayload({
+        key: CONFIG.pixKey,
+        name: CONFIG.merchantName,
+        city: CONFIG.merchantCity,
+        amount,
+        txid,
+        description
+      });
+
+      els.qrcode.replaceChildren();
+      new QRCode(els.qrcode, {
+        text: payload,
+        width: 220,
+        height: 220,
+        correctLevel: QRCode.CorrectLevel.M
+      });
+      els.pixCode.value = payload;
+      els.pixBox.classList.add('show');
+      showStatus(CONFIG.demoPix
+        ? 'QR Code de demonstração gerado. A chave PIX é FAKE e deve ser substituída antes da publicação.'
+        : 'Reserva criada como Pendente e QR Code PIX gerado com sucesso.');
+      playSuccessSound();
+      burstConfetti();
+      els.pixBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    async function copyPix() {
+      if (!els.pixCode.value) return;
+      try {
+        await navigator.clipboard.writeText(els.pixCode.value);
+        showStatus('Código PIX copiado.');
+      } catch {
+        els.pixCode.select();
+        document.execCommand('copy');
+        showStatus('Código PIX copiado.');
+      }
+    }
+
+    function downloadQr() {
+      const canvas = els.qrcode.querySelector('canvas');
+      const image = els.qrcode.querySelector('img');
+      const src = canvas ? canvas.toDataURL('image/png') : image?.src;
+      if (!src) return;
+      const link = document.createElement('a');
+      link.href = src;
+      link.download = `pix-cha-rifa-${state.gender}-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+
+    els.genderButtons.forEach(btn => btn.addEventListener('click', () => setGender(btn.dataset.gender)));
+    els.generatePix.addEventListener('click', generatePayment);
+    els.copyPix.addEventListener('click', copyPix);
+    els.downloadQr.addEventListener('click', downloadQr);
+    els.soundToggle.addEventListener('click', () => setSoundEnabled(!soundEnabled));
+    els.openAdmin.addEventListener('click', showAdminView);
+    els.backToRaffle.addEventListener('click', showPublicView);
+    els.backToRaffleFromLogin.addEventListener('click', showPublicView);
+    els.adminLoginBtn.addEventListener('click', loginAdmin);
+    els.adminPinInput.addEventListener('keydown', e => { if (e.key === 'Enter') loginAdmin(); });
+    els.adminLogout.addEventListener('click', logoutAdmin);
+    els.adminSearch.addEventListener('input', renderAdmin);
+    els.adminStatusFilter.addEventListener('change', renderAdmin);
+    els.adminGenderFilter.addEventListener('change', renderAdmin);
+    els.exportCsv.addEventListener('click', exportOrdersCsv);
+    window.addEventListener('storage', () => { renderGrid(); if (!els.adminView.hidden) renderAdmin(); });
+    window.addEventListener('raffle:orders-changed', () => { renderGrid(); if (!els.adminView.hidden) renderAdmin(); });
+
+    renderGrid();
+    renderSummary();
+  </script>
+</body>
+</html>
