@@ -360,7 +360,7 @@
     <span class="floaty heart" style="left:7%;--drift:28px;animation-duration:15s;animation-delay:-4s">💙</span>
     <span class="floaty star" style="left:17%;--drift:-18px;animation-duration:19s;animation-delay:-12s">⭐</span>
     <span class="floaty balloon" style="left:31%;--drift:35px;animation-duration:22s;animation-delay:-8s">🎈</span>
-    <span class="floaty heart" style="left:48%;--drift:-28px;animation-duration:17s;animation-delay:-10s">🩷</span>
+    <span class="floaty heart" style="left:48%;--drift:-28px;animation-duration:17s;animation-delay:-10s"><span style="color:#ef4f91">&hearts;</span></span>
     <span class="floaty star" style="left:64%;--drift:20px;animation-duration:21s;animation-delay:-15s">✨</span>
     <span class="floaty balloon" style="left:78%;--drift:-35px;animation-duration:20s;animation-delay:-5s">🎈</span>
     <span class="floaty heart" style="left:91%;--drift:22px;animation-duration:16s;animation-delay:-11s">💗</span>
@@ -388,7 +388,7 @@
       <div class="shell">
         <div class="hero-card">
           <div class="hero-copy">
-            <span class="eyebrow">💙 O bebê agora é outro! 🩷</span>
+            <span class="eyebrow">💙 O bebê agora é outro! <span style="color:#ef4f91">&hearts;</span></span>
             <h1>Chá Rifa<br>Revelação</h1>
             <p>Escolha <strong>Menino</strong> ou <strong>Menina</strong>, selecione seus números da sorte de 00 a 99 e gere seu pagamento via PIX em poucos segundos.</p>
             <div class="hero-actions">
@@ -410,7 +410,7 @@
 
           <div class="gender-switch" role="group" aria-label="Escolha o palpite do bebê">
             <button type="button" class="gender-btn boy" data-gender="boy" aria-pressed="true">💙 MENINO</button>
-            <button type="button" class="gender-btn girl" data-gender="girl" aria-pressed="false">🩷 MENINA</button>
+            <button type="button" class="gender-btn girl" data-gender="girl" aria-pressed="false"><span style="color:#ef4f91">&hearts;</span> MENINA</button>
           </div>
 
           <div class="legend" aria-label="Legenda dos números">
@@ -523,7 +523,7 @@
               <select id="adminGenderFilter" class="select" aria-label="Filtrar por palpite">
                 <option value="all">Menino e Menina</option>
                 <option value="boy">Menino 💙</option>
-                <option value="girl">Menina 🩷</option>
+                <option value="girl">Menina <span style="color:#ef4f91">&hearts;</span></option>
               </select>
             </div>
           </div>
@@ -539,7 +539,7 @@
     </section>
   </main>
 
-  <footer class="shell">🍀 Boa sorte a todos! Que venha a grande revelação! 💙🩷</footer>
+  <footer class="shell">🍀 Boa sorte a todos! Que venha a grande revelação! 💙<span style="color:#ef4f91">&hearts;</span></footer>
 
   <script>
     'use strict';
@@ -828,7 +828,7 @@
         const created = new Date(order.createdAt).toLocaleString('pt-BR');
         tr.innerHTML = `
           <td><strong>${escapeHtml(order.buyerName || 'Sem nome')}</strong><br><small>${escapeHtml(order.buyerPhone || '')}</small></td>
-          <td>${order.gender === 'boy' ? '💙 Menino' : '🩷 Menina'}</td>
+          <td>${order.gender === 'boy' ? '💙 Menino' : '<span style="color:#ef4f91">&hearts;</span> Menina'}</td>
           <td><strong>${(order.numbers||[]).map(escapeHtml).join(', ')}</strong></td>
           <td>${money.format(Number(order.amount||0))}</td>
           <td><span class="status-pill status-${order.status}">${statusLabel(order.status)}</span></td>
@@ -924,7 +924,7 @@
       const selected = [...state.selected[state.gender]].sort();
       const total = selected.length * CONFIG.pricePerNumber;
 
-      els.summaryGender.textContent = state.gender === 'boy' ? 'Menino 💙' : 'Menina 🩷';
+      els.summaryGender.textContent = state.gender === 'boy' ? 'Menino 💙' : 'Menina <span style="color:#ef4f91">&hearts;</span>';
       els.unitPrice.textContent = money.format(CONFIG.pricePerNumber);
       els.totalPrice.textContent = money.format(total);
       els.generatePix.disabled = selected.length === 0;
